@@ -56,7 +56,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=   # oder anon key
 
 ## Flow / Screens
 1. **Splash** (`1411:4135`): gestapelte Standort-Karten, kurz anzeigen, dann weiter (oder bei vorhandenem State direkt zur Map).
-2. **Name + Modus** (`1411:5095`): ein gemeinsamer Screen. „DEIN NAME“ mit Eingabefeld, darunter „Erkundungsmodus (Einzelspieler)“ → Map und „Team wählen“ → Team-Auswahl. Beide Buttons sind erst mit eingegebenem Namen aktiv.
+2. **Name + Modus** (`1411:5095`): ein gemeinsamer Screen. „DEIN NAME“ mit Eingabefeld, darunter „Erkundungsmodus (Einzelspieler)“ → Map und „Team wählen“ → Team-Auswahl. „Team wählen“ ist erst mit eingegebenem Namen aktiv (vorher 40 % Deckkraft), der Einzelspieler-Modus geht auch ohne Namen.
 3. **Team-Auswahl** (`1411:5139`): 4 Teams mit ihren Standorten und `aktiv/3` (aus `team_status`, per Realtime auf `team_members` refetchen). Volle Teams deaktiviert. Team antippen, dann „Team beitreten“ → `join_team`. Fehler `team_full` sauber abfangen.
 4. **Team-Lobby** (`1411:3881`): Teamname mit Standorten, 3 Plätze mit Live-Liste der Mitglieder über **Presence** auf dem Channel `team:{id}` (key = user_id, payload = `{ name }`), darunter „YOUR MISSION“ mit Text aus Figma (reiner Text, keine Logik dahinter).
    - „Back“ → `leave_team()` + Presence untrack → Team-Auswahl.
