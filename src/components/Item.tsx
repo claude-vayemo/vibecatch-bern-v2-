@@ -21,7 +21,7 @@ export default function Item({ active = false, disabled, onClick, children }: Pr
       }`}
     >
       <span className="min-w-0">{children}</span>
-      <img alt="" className="shrink-0" src={active ? selectActive : select} />
+      <img alt="" className="size-8 shrink-0" src={active ? selectActive : select} />
     </button>
   );
 }

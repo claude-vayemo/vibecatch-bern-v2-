@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
 import LocationCard from '../components/LocationCard';
 import { locations } from '../data/locations';
 
@@ -18,43 +19,65 @@ const layout: [number, number, number][] = [
   [66.9, 100.8, 17.8],
 ];
 
+const rotationOf = (i: number) => layout[i % layout.length][2];
+
 type Props = { onStart: () => void };
 
 export default function SplashScreen({ onStart }: Props) {
-  const [away, setAway] = useState(false);
+  const root = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setAway(true), 1200);
-    return () => clearTimeout(timer);
+  // Karten fallen von oben auf den Stapel, bleiben kurz liegen und fallen
+  // dann unten aus dem Bild. Dahinter erscheint der Text.
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>('.splash-card');
+      const drop = window.innerHeight * 1.4;
+      gsap.set(cards, { xPercent: -50, yPercent: -50, rotation: rotationOf });
+
+      gsap
+        .timeline()
+        .from(cards, {
+          y: -drop,
+          rotation: (i) => rotationOf(i) + (i % 2 ? 35 : -35),
+          duration: 0.9,
+          ease: 'power3.out',
+          stagger: { each: 0.07, from: 'end' },
+        })
+        .to(
+          cards,
+          {
+            y: drop,
+            rotation: (i) => rotationOf(i) + (i % 2 ? -30 : 30),
+            duration: 0.8,
+            ease: 'power2.in',
+            stagger: { each: 0.05, from: 'end' },
+          },
+          '+=0.5',
+        )
+        .from('.splash-text', { opacity: 0, y: 16, duration: 0.6, ease: 'power2.out', stagger: 0.15 }, '-=0.7');
+    }, root);
+    return () => ctx.revert();
   }, []);
 
   return (
     <button
+      ref={root}
       type="button"
       onClick={onStart}
       className="relative block h-dvh w-full overflow-hidden bg-brand text-black"
     >
-      <h1 className="absolute inset-x-0 top-[45%] text-center font-display text-[16px] font-bold">
+      <h1 className="splash-text absolute inset-x-0 top-[45%] text-center font-display text-[16px] font-bold">
         LET’S CATCH
         <br />
         THE VIBE OF BERNE
       </h1>
-      <p className="absolute inset-x-0 bottom-[calc(24px+env(safe-area-inset-bottom))] text-center">
+      <p className="splash-text absolute inset-x-0 bottom-[calc(24px+env(safe-area-inset-bottom))] text-center">
         Tap to start
       </p>
       {locations.map((location, i) => {
-        const [x, y, rotation] = layout[i % layout.length];
+        const [x, y] = layout[i % layout.length];
         return (
-          <div
-            key={location.id}
-            className="absolute w-[36.9%] transition-transform duration-700 ease-in"
-            style={{
-              left: `${x}%`,
-              top: `${y}%`,
-              transitionDelay: `${(layout.length - i) * 40}ms`,
-              transform: `translate(-50%, -50%) ${away ? 'translateY(120vh) ' : ''}rotate(${rotation}deg)`,
-            }}
-          >
+          <div key={location.id} className="splash-card absolute w-[36.9%]" style={{ left: `${x}%`, top: `${y}%` }}>
             <LocationCard location={location} />
           </div>
         );

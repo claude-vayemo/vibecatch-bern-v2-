@@ -1,3 +1,5 @@
+import { useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
 import Button from '../components/Button';
 import LocationCard from '../components/LocationCard';
 import Screen from '../components/Screen';
@@ -7,6 +9,24 @@ import { locations, TOTAL } from '../data/locations';
 type Props = { onBack: () => void };
 
 export default function FinalSuccess({ onBack }: Props) {
+  const grid = useRef<HTMLDivElement>(null);
+
+  // Die Karten erscheinen eine nach der anderen.
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.final-card', {
+        opacity: 0,
+        y: 14,
+        scale: 0.9,
+        duration: 0.45,
+        ease: 'power2.out',
+        stagger: 0.09,
+        delay: 0.2,
+      });
+    }, grid);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <Screen footer={<Button onClick={onBack}>VIEW THE MAP</Button>}>
       <ScreenHeader title="MISSION COMPLETE" />
@@ -22,9 +42,9 @@ export default function FinalSuccess({ onBack }: Props) {
           OF BERNE.
         </p>
       </div>
-      <div className="grid w-full grid-cols-4 gap-2 pb-8">
+      <div ref={grid} className="grid w-full grid-cols-4 gap-2 pb-8">
         {locations.map((location) => (
-          <LocationCard key={location.id} location={location} />
+          <LocationCard key={location.id} location={location} className="final-card" />
         ))}
       </div>
     </Screen>

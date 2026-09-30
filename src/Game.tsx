@@ -21,6 +21,12 @@ export default function Game() {
   const [spot, setSpot] = useState<{ id: number; detail: boolean } | null>(null);
   const [success, setSuccess] = useState<number | null>(null);
   const [final, setFinal] = useState(false);
+  const mapIntro = useRef(true);
+
+  const enterMap = () => {
+    mapIntro.current = true;
+    setView('map');
+  };
 
   const inTeam = mode === 'team' && teamId !== null;
   const members = useTeamMembers(inTeam ? teamId : null, name);
@@ -87,7 +93,7 @@ export default function Game() {
       <NameScreen
         onSolo={() => {
           startSolo();
-          setView('map');
+          enterMap();
         }}
         onChooseTeam={() => setView('teams')}
         onBack={() => setView('splash')}
@@ -98,7 +104,7 @@ export default function Game() {
     return <TeamSelectScreen onJoined={() => setView('lobby')} onBack={() => setView('name')} />;
   }
   if (view === 'lobby' && inTeam) {
-    return <LobbyScreen teamId={teamId} members={members} onEnter={() => setView('map')} onBack={backToTeams} />;
+    return <LobbyScreen teamId={teamId} members={members} onEnter={enterMap} onBack={backToTeams} />;
   }
 
   const selected = spot ? locations.find((l) => l.id === spot.id) : undefined;
@@ -118,7 +124,16 @@ export default function Game() {
 
   return (
     <>
-      <MapScreen marks={marked} teamId={inTeam ? teamId : null} onSelect={(id) => setSpot({ id, detail: false })} />
+      <MapScreen
+        marks={marked}
+        teamId={inTeam ? teamId : null}
+        onSelect={(id) => setSpot({ id, detail: false })}
+        onShowFinal={() => setFinal(true)}
+        intro={mapIntro.current}
+        onIntroPlayed={() => {
+          mapIntro.current = false;
+        }}
+      />
       {selected && (
         <SpotPreview
           location={selected}

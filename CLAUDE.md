@@ -8,6 +8,7 @@ Mobile-only Webapp „Vibecatch Bern“: 12 Standorte in Bern erkunden, als Einz
 - react-router-dom (Routen: `/`, `/reset`)
 - zustand + `persist` (localStorage)
 - @supabase/supabase-js: Anonymous Auth, RPC, Realtime (Postgres Changes, Presence, Broadcast)
+- gsap für Animationen (Splash, Mark-Success, Hotspots auf der Map, Final-Success)
 - Hosting: Vercel (Hobby), `vercel.json` mit SPA-Rewrite auf `/index.html`
 - Keine weiteren Libraries ohne Rückfrage.
 
@@ -53,7 +54,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=   # oder anon key
 - **Texte 1:1 aus Figma übernehmen**, inklusive der Mischung aus Deutsch und Englisch.
 - Die Node-IDs der Frames stehen unten bei den Screens. Die Sections „Team A“ bis „Team D“ zeigen die Standort-Zuteilung, `1411:5945` ist das Kartenbild.
 - **Fonts**: „PP Watch“ (Bold, Extralight) liegt als woff2 in `public/fonts/` (Dateinamen siehe README dort) und ist in `src/index.css` eingebunden. Fehlen die Dateien, greift die Ersatzschrift.
-- **Animationen**: Die Figma-Animationen (Splash, Mark-Success) sind nur vereinfacht per CSS umgesetzt, ohne Animations-Library.
+- **Animationen**: mit gsap frei nachgebaut, nicht 1:1 aus den Figma-Keyframes. Splash: Karten fallen herein und wieder hinaus. Map: Hotspots erscheinen beim Betreten nacheinander. Final-Success: Karten blenden nacheinander ein.
 - **Standorte noch offen**: Es bleiben 12 Standorte (4 Teams × 3), die finale Liste wird aber noch definiert. Die Frames in Figma widersprechen sich hier, darum die Namen nicht aus Figma ableiten, sondern nachfragen. Bis dahin Platzhalter in `locations.ts`.
 
 ## Flow / Screens
@@ -64,13 +65,13 @@ VITE_SUPABASE_PUBLISHABLE_KEY=   # oder anon key
    - „Back“ → `leave_team()` + Presence untrack → Team-Auswahl.
    - „Enter map“ ist ab 1 Mitglied aktiv.
 5. **Map** (`1411:3908`, `1411:3994`, `1411:5672`): Kartenbild mit absolut positionierten Hotspots (`left: x%`, `top: y%`), dazu `shortName` und Status (open / caught).
-   - Oben: „VIBECATCH BERN“ und Fortschritt „x / 12 caught“, bei 12/12 „12 / 12 caught – well done!“.
+   - Oben: „VIBECATCH BERN“ und Fortschritt „x / 12 caught“, bei 12/12 „12 / 12 caught – well done!“ als Button, der Final-Success erneut öffnet.
    - Bottom-Bar: Legende „open“ / „caught“. Im Team-Modus steht dort bei 12/12 stattdessen „Zurück zum Treffpunkt“.
    - Team: Standorte fremder Teams abgedimmt (z. B. opacity), aber klickbar und ohne Markier-Button. Der Status aller 12 kommt live aus `location_marks`.
    - Solo: Status aus `soloMarks`, keine DB.
 6. **Spot-Vorschau** (`1411:4080`): Bottom-Sheet über der Map nach Tap auf einen Hotspot. „#n NAME“, Bild, `topic` und `description`, Button „Explore this place“ → Spot-Detail.
 7. **Spot-Detail** (`1411:4096`): Kopf mit „#n NAME“ und Schliessen-Icon, „Zum Standort via Google Maps“ (öffnet in neuem Tab), Bild, „OBSERVE & DOCUMENT“ mit `task`, Hinweistext, Button „Mark as caught“. Der Button erscheint nur, wenn der Spot offen ist und zum eigenen Team gehört (bzw. im Solo-Modus immer).
-8. **Mark-Success** (`1411:4499`): „0x / 12“, „VIBE CAUGHT“, Karte des Standorts, „Back to map“. Ca. 3 s anzeigen, dann automatisch zurück zur Map.
+8. **Mark-Success** (`1411:4499`): „0x / 12“, „VIBE CAUGHT“, Karte des Standorts, „Back to map“. Die Karte fällt herein und wieder hinaus, nach ca. 2 s geht es automatisch zurück zur Map.
 9. **Final-Success** (`1411:5306`): „MISSION COMPLETE“, „12 / 12 WE CAUGHT THE VIBE OF BERNE.“, Raster mit allen 12 Standorten, Button „VIEW THE MAP“. Erscheint automatisch, sobald 12/12 erreicht sind (Team: global für alle Clients gleichzeitig via Realtime).
 
 ## Live-Logik Team
