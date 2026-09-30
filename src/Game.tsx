@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Fade from './components/Fade';
 import { locations, TOTAL } from './data/locations';
 import { supabase } from './lib/supabase';
 import { useHeartbeat, useResetListener, useTeamMarks, useTeamMembers } from './lib/team';
@@ -82,28 +83,54 @@ export default function Game() {
   if (success !== null) {
     const location = locations.find((l) => l.id === success)!;
     const count = new Set([...(marks ?? []), success]).size;
-    return <MarkSuccess location={location} count={count} onDone={closeSuccess} />;
+    return (
+      <Fade key="success">
+        <MarkSuccess location={location} count={count} onDone={closeSuccess} />
+      </Fade>
+    );
   }
-  if (final) return <FinalSuccess onBack={() => setFinal(false)} />;
+  if (final) {
+    return (
+      <Fade key="final">
+        <FinalSuccess onBack={() => setFinal(false)} />
+      </Fade>
+    );
+  }
 
-  if (view === 'splash') return <SplashScreen onStart={() => setView('name')} />;
+  if (view === 'splash') {
+    return (
+      <Fade key="splash">
+        <SplashScreen onStart={() => setView('name')} />
+      </Fade>
+    );
+  }
   if (view === 'name') {
     return (
-      <NameScreen
-        onSolo={() => {
-          startSolo();
-          enterMap();
-        }}
-        onChooseTeam={() => setView('teams')}
-        onBack={() => setView('splash')}
-      />
+      <Fade key="name">
+        <NameScreen
+          onSolo={() => {
+            startSolo();
+            enterMap();
+          }}
+          onChooseTeam={() => setView('teams')}
+          onBack={() => setView('splash')}
+        />
+      </Fade>
     );
   }
   if (view === 'teams' || !mode) {
-    return <TeamSelectScreen onJoined={() => setView('lobby')} onBack={() => setView('name')} />;
+    return (
+      <Fade key="teams">
+        <TeamSelectScreen onJoined={() => setView('lobby')} onBack={() => setView('name')} />
+      </Fade>
+    );
   }
   if (view === 'lobby' && inTeam) {
-    return <LobbyScreen teamId={teamId} members={members} onEnter={enterMap} onBack={backToTeams} />;
+    return (
+      <Fade key="lobby">
+        <LobbyScreen teamId={teamId} members={members} onEnter={enterMap} onBack={backToTeams} />
+      </Fade>
+    );
   }
 
   const selected = locations.find((l) => l.id === spot);
@@ -111,16 +138,18 @@ export default function Game() {
 
   return (
     <>
-      <MapScreen
-        marks={marked}
-        teamId={inTeam ? teamId : null}
-        onSelect={setSpot}
-        onShowFinal={() => setFinal(true)}
-        intro={mapIntro.current}
-        onIntroPlayed={() => {
-          mapIntro.current = false;
-        }}
-      />
+      <Fade key="map">
+        <MapScreen
+          marks={marked}
+          teamId={inTeam ? teamId : null}
+          onSelect={setSpot}
+          onShowFinal={() => setFinal(true)}
+          intro={mapIntro.current}
+          onIntroPlayed={() => {
+            mapIntro.current = false;
+          }}
+        />
+      </Fade>
       {selected && (
         <SpotSheet
           key={selected.id}
