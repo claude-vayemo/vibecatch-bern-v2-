@@ -8,8 +8,7 @@ import MapScreen from './screens/MapScreen';
 import MarkSuccess from './screens/MarkSuccess';
 import NameScreen from './screens/NameScreen';
 import SplashScreen from './screens/SplashScreen';
-import SpotDetail from './screens/SpotDetail';
-import SpotPreview from './screens/SpotPreview';
+import SpotSheet from './screens/SpotSheet';
 import TeamSelectScreen from './screens/TeamSelectScreen';
 import { useStore } from './store';
 
@@ -18,7 +17,7 @@ type View = 'splash' | 'name' | 'teams' | 'lobby' | 'map';
 export default function Game() {
   const { name, mode, teamId, soloMarks, startSolo, leaveTeam, markSolo, reset } = useStore();
   const [view, setView] = useState<View>(mode ? 'map' : 'splash');
-  const [spot, setSpot] = useState<{ id: number; detail: boolean } | null>(null);
+  const [spot, setSpot] = useState<number | null>(null);
   const [success, setSuccess] = useState<number | null>(null);
   const [final, setFinal] = useState(false);
   const mapIntro = useRef(true);
@@ -107,27 +106,15 @@ export default function Game() {
     return <LobbyScreen teamId={teamId} members={members} onEnter={enterMap} onBack={backToTeams} />;
   }
 
-  const selected = spot ? locations.find((l) => l.id === spot.id) : undefined;
+  const selected = locations.find((l) => l.id === spot);
   const marked = marks ?? [];
-
-  if (selected && spot?.detail) {
-    const canMark = !marked.includes(selected.id) && (!inTeam || selected.teamId === teamId);
-    return (
-      <SpotDetail
-        location={selected}
-        canMark={canMark}
-        onMark={() => mark(selected.id)}
-        onClose={() => setSpot(null)}
-      />
-    );
-  }
 
   return (
     <>
       <MapScreen
         marks={marked}
         teamId={inTeam ? teamId : null}
-        onSelect={(id) => setSpot({ id, detail: false })}
+        onSelect={setSpot}
         onShowFinal={() => setFinal(true)}
         intro={mapIntro.current}
         onIntroPlayed={() => {
@@ -135,9 +122,11 @@ export default function Game() {
         }}
       />
       {selected && (
-        <SpotPreview
+        <SpotSheet
+          key={selected.id}
           location={selected}
-          onExplore={() => setSpot({ id: selected.id, detail: true })}
+          canMark={!marked.includes(selected.id) && (!inTeam || selected.teamId === teamId)}
+          onMark={() => mark(selected.id)}
           onClose={() => setSpot(null)}
         />
       )}

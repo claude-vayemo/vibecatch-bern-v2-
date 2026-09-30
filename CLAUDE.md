@@ -69,7 +69,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=   # oder anon key
    - Bottom-Bar: Legende „open“ / „caught“. Im Team-Modus steht dort bei 12/12 stattdessen „Zurück zum Treffpunkt“.
    - Team: Standorte fremder Teams abgedimmt (z. B. opacity), aber klickbar und ohne Markier-Button. Der Status aller 12 kommt live aus `location_marks`.
    - Solo: Status aus `soloMarks`, keine DB.
-6. **Spot-Vorschau** (`1411:4080`): Bottom-Sheet über der Map nach Tap auf einen Hotspot. „#n NAME“, Bild, `topic` und `description`, Button „Explore this place“ → Spot-Detail.
+6. **Spot-Vorschau** (`1411:4080`): Bottom-Sheet über der Map nach Tap auf einen Hotspot, fährt von unten herein und bei Tap ausserhalb wieder hinunter. Vorschau und Detail sind ein gemeinsames Sheet (`SpotSheet`): „Explore this place“ fährt es auf die volle Höhe und wechselt den Inhalt. „#n NAME“, Bild, `topic` und `description`, Button „Explore this place“ → Spot-Detail.
 7. **Spot-Detail** (`1411:4096`): Kopf mit „#n NAME“ und Schliessen-Icon, „Zum Standort via Google Maps“ (öffnet in neuem Tab), Bild, „OBSERVE & DOCUMENT“ mit `task`, Hinweistext, Button „Mark as caught“. Der Button erscheint nur, wenn der Spot offen ist und zum eigenen Team gehört (bzw. im Solo-Modus immer).
 8. **Mark-Success** (`1411:4499`): „0x / 12“, „VIBE CAUGHT“, Karte des Standorts, „Back to map“. Die Karte fällt herein und wieder hinaus, nach ca. 2 s geht es automatisch zurück zur Map.
 9. **Final-Success** (`1411:5306`): „MISSION COMPLETE“, „12 / 12 WE CAUGHT THE VIBE OF BERNE.“, Raster mit allen 12 Standorten, Button „VIEW THE MAP“. Erscheint automatisch, sobald 12/12 erreicht sind (Team: global für alle Clients gleichzeitig via Realtime).
