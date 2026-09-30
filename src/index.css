@@ -1,9 +1,25 @@
 @import "tailwindcss";
 
+/* Font-Dateien liegen in public/fonts (siehe README dort) */
+@font-face {
+  font-family: "PP Watch";
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/PPWatch-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "PP Watch";
+  font-weight: 200;
+  font-display: swap;
+  src: url("/fonts/PPWatch-Extralight.woff2") format("woff2");
+}
+
 /* Tokens aus Figma (Page „Vibecatch Dev“) */
 @theme {
   --color-brand: #ff6723;
-  --font-display: "PP Watch", "Arial Black", sans-serif;
+  --font-display: "PP Watch", "Arial Black", Arial, sans-serif;
+  --font-card: "PP Watch", Arial, sans-serif;
   --font-mono: Menlo, ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 

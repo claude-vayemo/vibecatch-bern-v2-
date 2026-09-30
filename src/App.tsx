@@ -1,30 +1,25 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Game from './Game';
 import { ensureSession } from './lib/auth';
-import NameScreen from './screens/NameScreen';
-import { useStore } from './store';
-
-function Game() {
-  const mode = useStore((s) => s.mode);
-  const [choosingTeam, setChoosingTeam] = useState(false);
-
-  if (mode) return <p className="p-6">Map (folgt)</p>;
-  if (choosingTeam) return <p className="p-6">Team-Auswahl (folgt)</p>;
-  return <NameScreen onChooseTeam={() => setChoosingTeam(true)} />;
-}
+import ResetScreen from './screens/ResetScreen';
 
 export default function App() {
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
-    void ensureSession();
+    void ensureSession().finally(() => setReady(true));
   }, []);
 
   return (
     <BrowserRouter>
-      <div className="mx-auto min-h-dvh max-w-[480px]">
-        <Routes>
-          <Route path="/" element={<Game />} />
-          <Route path="/reset" element={<p className="p-6">Reset</p>} />
-        </Routes>
+      <div className="mx-auto min-h-dvh max-w-[480px] bg-brand">
+        {ready && (
+          <Routes>
+            <Route path="/" element={<Game />} />
+            <Route path="/reset" element={<ResetScreen />} />
+          </Routes>
+        )}
       </div>
     </BrowserRouter>
   );

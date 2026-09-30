@@ -52,6 +52,8 @@ VITE_SUPABASE_PUBLISHABLE_KEY=   # oder anon key
 - **Figma hat Vorrang**: Weicht das Design von diesem Dokument ab, gilt Figma. Grössere Abweichungen kurz melden.
 - **Texte 1:1 aus Figma übernehmen**, inklusive der Mischung aus Deutsch und Englisch.
 - Die Node-IDs der Frames stehen unten bei den Screens. Die Sections „Team A“ bis „Team D“ zeigen die Standort-Zuteilung, `1411:5945` ist das Kartenbild.
+- **Fonts**: „PP Watch“ (Bold, Extralight) liegt als woff2 in `public/fonts/` (Dateinamen siehe README dort) und ist in `src/index.css` eingebunden. Fehlen die Dateien, greift die Ersatzschrift.
+- **Animationen**: Die Figma-Animationen (Splash, Mark-Success) sind nur vereinfacht per CSS umgesetzt, ohne Animations-Library.
 - **Standorte noch offen**: Es bleiben 12 Standorte (4 Teams × 3), die finale Liste wird aber noch definiert. Die Frames in Figma widersprechen sich hier, darum die Namen nicht aus Figma ableiten, sondern nachfragen. Bis dahin Platzhalter in `locations.ts`.
 
 ## Flow / Screens

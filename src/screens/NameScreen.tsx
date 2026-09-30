@@ -1,27 +1,27 @@
+import BackLink from '../components/BackLink';
 import Button from '../components/Button';
 import Screen from '../components/Screen';
 import ScreenHeader from '../components/ScreenHeader';
 import TextInput from '../components/TextInput';
 import { useStore } from '../store';
 
-type Props = { onChooseTeam: () => void };
+type Props = { onSolo: () => void; onChooseTeam: () => void; onBack: () => void };
 
-export default function NameScreen({ onChooseTeam }: Props) {
+export default function NameScreen({ onSolo, onChooseTeam, onBack }: Props) {
   const name = useStore((s) => s.name);
   const setName = useStore((s) => s.setName);
-  const startSolo = useStore((s) => s.startSolo);
-  const empty = name.trim() === '';
 
   return (
     <Screen
       footer={
         <>
-          <Button variant="white" onClick={startSolo}>
+          <Button variant="white" onClick={onSolo}>
             Erkundungsmodus (Einzelspieler)
           </Button>
-          <Button disabled={empty} onClick={onChooseTeam}>
+          <Button disabled={name.trim() === ''} onClick={onChooseTeam}>
             Team wählen
           </Button>
+          <BackLink onClick={onBack} />
         </>
       }
     >
