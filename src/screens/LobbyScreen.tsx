@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import Item from '../components/Item';
 import Screen from '../components/Screen';
 import ScreenHeader from '../components/ScreenHeader';
-import { locations } from '../data/locations';
+import { locations, TOTAL } from '../data/locations';
 import { teams } from '../data/teams';
 
 type Props = { teamId: number; members: string[]; onEnter: () => void; onBack: () => void };
@@ -35,7 +35,7 @@ export default function LobbyScreen({ teamId, members, onEnter, onBack }: Props)
       <div className="mt-7 flex flex-col items-center gap-6 text-center">
         <h2 className="font-display text-[16px] font-bold">YOUR MISSION</h2>
         <p className="max-w-[260px]">
-          Together, document all 12 locations before 11:30.
+          Together, document all {TOTAL} locations before 11:30.
           <br />
           <br />
           Your team can explore one location at a time.

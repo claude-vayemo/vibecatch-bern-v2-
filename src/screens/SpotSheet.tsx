@@ -7,7 +7,7 @@ import type { Location } from '../data/locations';
 type Props = { location: Location; canMark: boolean; onMark: () => void; onClose: () => void };
 
 // Sheet über der Map: erst die Spot-Vorschau (halbe Höhe), nach „Explore this
-// place“ fährt es auf die volle Höhe und zeigt das Spot-Detail.
+// area“ fährt es auf die volle Höhe und zeigt das Spot-Detail.
 export default function SpotSheet({ location, canMark, onMark, onClose }: Props) {
   const backdrop = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -90,7 +90,7 @@ export default function SpotSheet({ location, canMark, onMark, onClose }: Props)
               </button>
             </div>
             <a className="mt-3 mb-[30px] self-start underline" href={location.mapsUrl} target="_blank" rel="noreferrer">
-              Zum Standort via Google Maps
+              In Google Maps öffnen ↗
             </a>
             {image}
             <div className="mt-10 flex flex-col gap-2 text-[14px]">
@@ -100,8 +100,8 @@ export default function SpotSheet({ location, canMark, onMark, onClose }: Props)
             {canMark && (
               <>
                 <p className="mt-auto pt-10 text-[14px] leading-[1.5]">
-                  Wenn ihr fertig dokumentiert habt, könnt ihr den Ort als markiert abhaken und den nächsten Spot
-                  anschauen.
+                  Halte fest, was dich überrascht – als Foto, Video oder Notiz. Welche Idee nimmst du für deinen Brand
+                  mit?
                 </p>
                 <Button className="mt-9" icon="check" onClick={onMark}>
                   Mark as caught
@@ -119,7 +119,7 @@ export default function SpotSheet({ location, canMark, onMark, onClose }: Props)
               <p className="leading-[1.5]">{location.description}</p>
             </div>
             <Button className="mt-8" icon="down" onClick={explore}>
-              Explore this place
+              Explore this area
             </Button>
           </div>
         )}

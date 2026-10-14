@@ -75,7 +75,11 @@ export default function MapScreen({ marks, teamId, onSelect, onShowFinal, intro,
               key={location.id}
               type="button"
               onClick={() => onSelect(location.id)}
-              className={`hotspot absolute flex origin-left -translate-x-3 -translate-y-1/2 items-center gap-2 ${
+              className={`hotspot absolute flex -translate-y-1/2 items-center gap-2 ${
+                location.labelLeft
+                  ? 'origin-right -translate-x-[calc(100%-12px)] flex-row-reverse'
+                  : 'origin-left -translate-x-3'
+              } ${
                 foreign ? 'opacity-40' : ''
               } ${debug ? 'pointer-events-none' : ''}`}
               style={{ left: `${location.x}%`, top: `${location.y}%` }}
