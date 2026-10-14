@@ -113,7 +113,6 @@ export default function SpotSheet({ location, caught, onMark, onUnmark, onClose 
           </div>
         ) : (
           <div className="relative px-[26px] pt-[34px] pb-[calc(29px+env(safe-area-inset-bottom))]">
-            <div className="absolute top-[43px] left-1/2 w-10 -translate-x-1/2 border-t border-black" />
             {title}
             <div className="mt-6">{image}</div>
             <div className="mt-8 flex flex-col gap-2 text-[14px]">
