@@ -1,6 +1,5 @@
 export type Location = {
   id: number;
-  teamId: number;
   name: string;
   shortName: string;
   image: string;
@@ -13,12 +12,10 @@ export type Location = {
   labelLeft?: boolean; // Label links vom Spot (wie in Figma)
 };
 
-// Inhalte aus Figma (Node 1492:14589). IDs und Team-Zuteilung entsprechen dem
-// Seed in supabase/migrations/0001_init.sql.
+// Inhalte aus Figma (Node 1492:14589).
 export const locations: Location[] = [
   {
     id: 1,
-    teamId: 1,
     name: 'Bahnhof',
     shortName: 'Bahnhof',
     image: '/images/locations/01.jpg',
@@ -33,7 +30,6 @@ export const locations: Location[] = [
   },
   {
     id: 2,
-    teamId: 1,
     name: 'Reitschule',
     shortName: 'Reitschule',
     image: '/images/locations/02.jpg',
@@ -49,7 +45,6 @@ export const locations: Location[] = [
   },
   {
     id: 3,
-    teamId: 1,
     name: 'PROGR',
     shortName: 'PROGR',
     image: '/images/locations/03.jpg',
@@ -64,7 +59,6 @@ export const locations: Location[] = [
   },
   {
     id: 4,
-    teamId: 2,
     name: 'Altstadt',
     shortName: 'Altstadt',
     image: '/images/locations/04.jpg',
@@ -79,7 +73,6 @@ export const locations: Location[] = [
   },
   {
     id: 5,
-    teamId: 2,
     name: 'Bundeshaus',
     shortName: 'Bundeshaus',
     image: '/images/locations/05.jpg',
@@ -95,7 +88,6 @@ export const locations: Location[] = [
   },
   {
     id: 6,
-    teamId: 2,
     name: 'Lorraine',
     shortName: 'Lorraine',
     image: '/images/locations/06.jpg',
@@ -110,7 +102,6 @@ export const locations: Location[] = [
   },
   {
     id: 7,
-    teamId: 3,
     name: 'Breitsch',
     shortName: 'Breitsch',
     image: '/images/locations/07.jpg',
@@ -126,7 +117,6 @@ export const locations: Location[] = [
   },
   {
     id: 8,
-    teamId: 3,
     name: 'Länggasse',
     shortName: 'Länggasse',
     image: '/images/locations/08.jpg',
@@ -141,7 +131,6 @@ export const locations: Location[] = [
   },
   {
     id: 9,
-    teamId: 3,
     name: 'Marzili',
     shortName: 'Marzili',
     image: '/images/locations/09.jpg',
@@ -157,7 +146,6 @@ export const locations: Location[] = [
   },
   {
     id: 10,
-    teamId: 4,
     name: 'Sandrain',
     shortName: 'Sandrain',
     image: '/images/locations/10.jpg',

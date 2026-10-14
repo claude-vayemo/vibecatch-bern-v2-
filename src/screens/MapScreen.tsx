@@ -6,7 +6,6 @@ import { locations, TOTAL } from '../data/locations';
 
 type Props = {
   marks: number[];
-  teamId: number | null; // null = Solo
   onSelect: (locationId: number) => void;
   onShowFinal: () => void;
   intro: boolean; // Standorte nacheinander einblenden
@@ -15,7 +14,7 @@ type Props = {
 
 const debug = new URLSearchParams(window.location.search).has('debug');
 
-export default function MapScreen({ marks, teamId, onSelect, onShowFinal, intro, onIntroPlayed }: Props) {
+export default function MapScreen({ marks, onSelect, onShowFinal, intro, onIntroPlayed }: Props) {
   const [position, setPosition] = useState('');
   const map = useRef<HTMLDivElement>(null);
   const done = marks.length >= TOTAL;
@@ -69,7 +68,6 @@ export default function MapScreen({ marks, teamId, onSelect, onShowFinal, intro,
         <img alt="Karte von Bern" className="block w-full" src="/images/map.png" />
         {locations.map((location) => {
           const caught = marks.includes(location.id);
-          const foreign = teamId !== null && location.teamId !== teamId;
           return (
             <button
               key={location.id}
@@ -79,8 +77,6 @@ export default function MapScreen({ marks, teamId, onSelect, onShowFinal, intro,
                 location.labelLeft
                   ? 'origin-right -translate-x-[calc(100%-12px)] flex-row-reverse'
                   : 'origin-left -translate-x-3'
-              } ${
-                foreign ? 'opacity-40' : ''
               } ${debug ? 'pointer-events-none' : ''}`}
               style={{ left: `${location.x}%`, top: `${location.y}%` }}
             >
@@ -100,8 +96,6 @@ export default function MapScreen({ marks, teamId, onSelect, onShowFinal, intro,
       <footer className="sticky bottom-0 mt-auto flex min-h-[70px] items-center justify-center gap-8 bg-white pb-[env(safe-area-inset-bottom)]">
         {debug && position ? (
           <p>{position} (kopiert)</p>
-        ) : done && teamId !== null ? (
-          <p>Zurück zum Treffpunkt</p>
         ) : (
           <>
             <span className="flex items-center gap-2">
