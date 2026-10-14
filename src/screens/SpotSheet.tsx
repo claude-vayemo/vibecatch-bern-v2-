@@ -4,11 +4,11 @@ import close from '../assets/icons/close.svg';
 import Button from '../components/Button';
 import type { Location } from '../data/locations';
 
-type Props = { location: Location; canMark: boolean; onMark: () => void; onClose: () => void };
+type Props = { location: Location; caught: boolean; onMark: () => void; onUnmark: () => void; onClose: () => void };
 
 // Sheet über der Map: erst die Spot-Vorschau (halbe Höhe), nach „Explore this
 // area“ fährt es auf die volle Höhe und zeigt das Spot-Detail.
-export default function SpotSheet({ location, canMark, onMark, onClose }: Props) {
+export default function SpotSheet({ location, caught, onMark, onUnmark, onClose }: Props) {
   const backdrop = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
@@ -97,16 +97,18 @@ export default function SpotSheet({ location, canMark, onMark, onClose }: Props)
               <h3 className="font-display font-bold tracking-[0.7px]">OBSERVE &amp; DOCUMENT</h3>
               <p className="leading-[1.5]">{location.task}</p>
             </div>
-            {canMark && (
-              <>
-                <p className="mt-auto pt-10 text-[14px] leading-[1.5]">
-                  Halte fest, was dich überrascht – als Foto, Video oder Notiz. Welche Idee nimmst du für deinen Brand
-                  mit?
-                </p>
-                <Button className="mt-9" icon="check" onClick={onMark}>
-                  Mark as caught
-                </Button>
-              </>
+            <p className="mt-auto pt-10 text-[14px] leading-[1.5]">
+              Halte fest, was dich überrascht – als Foto, Video oder Notiz. Welche Idee nimmst du für deinen Brand
+              mit?
+            </p>
+            {caught ? (
+              <button type="button" className="mt-9 h-[60px] self-center underline" onClick={onUnmark}>
+                unmark
+              </button>
+            ) : (
+              <Button className="mt-9" icon="check" onClick={onMark}>
+                Mark as caught
+              </Button>
             )}
           </div>
         ) : (

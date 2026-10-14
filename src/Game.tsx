@@ -12,7 +12,7 @@ import { useStore } from './store';
 type View = 'splash' | 'intro' | 'map';
 
 export default function Game() {
-  const { started, marks, start, mark } = useStore();
+  const { started, marks, start, mark, unmark } = useStore();
   const [view, setView] = useState<View>(started ? 'map' : 'splash');
   const [spot, setSpot] = useState<number | null>(null);
   const [success, setSuccess] = useState<number | null>(null);
@@ -81,6 +81,10 @@ export default function Game() {
           marks={marks}
           onSelect={setSpot}
           onShowFinal={() => setFinal(true)}
+          onHome={() => {
+            setSpot(null);
+            setView('splash');
+          }}
           intro={mapIntro.current}
           onIntroPlayed={() => {
             mapIntro.current = false;
@@ -91,8 +95,9 @@ export default function Game() {
         <SpotSheet
           key={selected.id}
           location={selected}
-          canMark={!marks.includes(selected.id)}
+          caught={marks.includes(selected.id)}
           onMark={() => catchSpot(selected.id)}
+          onUnmark={() => unmark(selected.id)}
           onClose={() => setSpot(null)}
         />
       )}

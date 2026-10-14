@@ -8,13 +8,14 @@ type Props = {
   marks: number[];
   onSelect: (locationId: number) => void;
   onShowFinal: () => void;
+  onHome: () => void; // Tap auf den Titel → Splash
   intro: boolean; // Standorte nacheinander einblenden
   onIntroPlayed: () => void;
 };
 
 const debug = new URLSearchParams(window.location.search).has('debug');
 
-export default function MapScreen({ marks, onSelect, onShowFinal, intro, onIntroPlayed }: Props) {
+export default function MapScreen({ marks, onSelect, onShowFinal, onHome, intro, onIntroPlayed }: Props) {
   const [position, setPosition] = useState('');
   const map = useRef<HTMLDivElement>(null);
   const done = marks.length >= TOTAL;
@@ -52,7 +53,11 @@ export default function MapScreen({ marks, onSelect, onShowFinal, intro, onIntro
   return (
     <div className="flex min-h-dvh flex-col bg-brand text-black">
       <header className="flex flex-col items-center gap-3 pt-[calc(20px+env(safe-area-inset-top))] pb-[18px]">
-        <h1 className="font-display text-[16px] font-bold">VIBECATCH BERN</h1>
+        <h1 className="font-display text-[16px] font-bold">
+          <button type="button" onClick={onHome}>
+            VIBECATCH BERN
+          </button>
+        </h1>
         {done ? (
           <button type="button" className="underline" onClick={onShowFinal}>
             {TOTAL} / {TOTAL} caught – well done!
@@ -73,20 +78,25 @@ export default function MapScreen({ marks, onSelect, onShowFinal, intro, onIntro
               key={location.id}
               type="button"
               onClick={() => onSelect(location.id)}
-              className={`hotspot absolute flex -translate-y-1/2 items-center gap-2 ${
-                location.labelLeft
-                  ? 'origin-right -translate-x-[calc(100%-12px)] flex-row-reverse'
-                  : 'origin-left -translate-x-3'
+              className={`absolute -translate-y-1/2 ${
+                location.labelLeft ? '-translate-x-[calc(100%-12px)]' : '-translate-x-3'
               } ${debug ? 'pointer-events-none' : ''}`}
               style={{ left: `${location.x}%`, top: `${location.y}%` }}
             >
-              <img alt={caught ? 'caught' : 'open'} src={caught ? markerCaught : markerOpen} />
+              {/* Animiert wird nur das innere Element, damit die Positionierung erhalten bleibt. */}
               <span
-                className={`border-t border-black px-2 py-1 whitespace-nowrap ${
-                  caught ? 'bg-black text-white' : 'bg-white text-black'
+                className={`hotspot flex items-center gap-2 ${
+                  location.labelLeft ? 'origin-right flex-row-reverse' : 'origin-left'
                 }`}
               >
-                {location.shortName}
+                <img alt={caught ? 'caught' : 'open'} src={caught ? markerCaught : markerOpen} />
+                <span
+                  className={`border-t border-black px-2 py-1 whitespace-nowrap ${
+                    caught ? 'bg-black text-white' : 'bg-white text-black'
+                  }`}
+                >
+                  {location.shortName}
+                </span>
               </span>
             </button>
           );
