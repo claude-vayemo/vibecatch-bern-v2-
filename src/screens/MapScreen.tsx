@@ -65,7 +65,7 @@ export default function MapScreen({ marks, onSelect, onShowFinal, intro, onIntro
       </header>
 
       <div ref={map} className="relative" onClick={showPosition}>
-        <img alt="Karte von Bern" className="block w-full" src="/images/map.png" />
+        <img alt="Karte von Bern" className="block w-full" src="/images/map.jpg" />
         {locations.map((location) => {
           const caught = marks.includes(location.id);
           return (
