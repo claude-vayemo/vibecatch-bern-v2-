@@ -3,7 +3,7 @@
 Mobile-only Webapp „Vibecatch Bern“: 10 Standorte in Bern erkunden. Jede Person spielt für sich, der Fortschritt liegt nur lokal im Browser. Keine Konten, keine Datenbank, kein Backend. Design kommt aus Figma (Figma MCP). Schlank, funktional, kostenlos betreibbar.
 
 ## Versionen
-- **v2 (dieses Repo)**: GitHub `claude-vayemo/vibecatch-bern-v2`, eigenes Vercel-Projekt. Ohne Teams und ohne Namen.
+- **v2 (dieses Repo)**: GitHub `claude-vayemo/vibecatch-bern-v2-`, eigenes Vercel-Projekt. Ohne Teams und ohne Namen.
 - **v1 (alt, nicht mehr anfassen)**: GitHub `claude-vayemo/vibechatch-bern`, eigenes Vercel-Projekt mit Team-Modus und Supabase. Läuft unverändert weiter. Nichts in dieses Repo pushen und die Supabase-DB nicht verändern.
 
 ## Stack
